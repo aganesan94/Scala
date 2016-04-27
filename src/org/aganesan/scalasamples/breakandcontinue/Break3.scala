@@ -1,20 +1,19 @@
 package org.aganesan.scalasamples.breakandcontinue
-import scala.util.control.Breaks._
+import scala.util.control._
 
 //This example simulates the continue keyword in java.
-object Break2 extends App {
-  val searchMe = "panoramic view"
-  var numPs = 0
-  for (i <- 0 until searchMe.length) {
-    breakable {
-      if (searchMe.charAt(i) != 'a') {
-        break // break out of the 'breakable', continue the outside loop
-      } else {
-        numPs += 1
-      }
-      println(s"Breakable::$i");
-    }
-    println(s"Forloop::$i");
-  }
-  println("Found " + numPs + " a's in the string.")
+object Break3 extends App {
+
+   val Inner = new Breaks
+    val Outer = new Breaks
+    Outer.breakable {
+        for (i <- 1 to 5) {
+            Inner.breakable {
+                for (j <- 'a' to 'e') {
+                    if (i == 1 && j == 'c') Inner.break else println(s"i: $i, j: $j")
+                    if (i == 2 && j == 'b') Outer.break
+                }
+            }
+        }
+   }
 }
